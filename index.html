@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="no">
+    <head>
+        <title>turbingo</title>
+    </head>
+    <style>
+        #bingo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-right: 1px solid #000;
+            border-top: 1px solid #000;
+        }
+        #bingo button {
+            height: 100px;
+            border-bottom: 1px solid #000;
+            border-left: 1px solid #000;
+            border-top: 1px transparent;
+            border-right: 1px transparent;
+        }
+
+        #bingo button:disabled {
+            background-color: #ff0;
+            color: #000;
+        }
+    </style>
+    <body>
+        <div id="test">
+        </div>
+        <section id="bingo">
+            <button id="but1">Gå tur mens du hører en episode av ITSimpelthen</button>
+            <button id="but2">Gå rundt et vann</button>
+            <button id="but3">Gå på historisk område</button>
+            <button id="but4">Gå langs en elv</button>
+            <button id="but5">Gå et sted du ikke har vært før</button>
+            <button id="but6">Gå i en park</button>
+            <button id="but7">Gå en lang tur</button>
+            <button id="but8">Invitér en du ikke prater med så mye ellers på tur</button>
+            <button id="but9">Spise lunsj ute</button>
+            <button id="but10">Legg ut bilde av at du gikk tur på Slack (#trim-bevis)</button>
+            <button id="but11">Si hei til en fremmed på tur</button>
+            <button id="but12">Gå til en statue</button>
+            <button id="but13">Gå tur helt uten å bruke mobiltelefonen</button>
+            <button id="but14">Gå en tur raskt</button>
+            <button id="but15">Gå tur mens du snakker med en kollega</button>
+            <button id="but16">Gå tur i dårlig vær</button>
+        </section>
+        <script>
+            const wrapper = document.getElementById("bingo")
+            wrapper.addEventListener("click", (event) => {
+                let state = JSON.parse(localStorage.getItem("bingo"))
+
+                const isButton = event.target.nodeName === 'BUTTON'
+                const date = new Date().toISOString().slice(0, 10);
+                if (state.lastFilled && state.lastFilled == date) {
+                    return
+                }
+                if (!isButton) {
+                    return
+                }
+                if (state.checkedItems.find(e => e == event.target.id)) {
+                    return
+                } else {
+                    state.lastFilled = date;
+                    state.checkedItems.push(event.target.id)
+                    localStorage.setItem("bingo", JSON.stringify(state))
+                    event.target.disabled = true
+                }
+            })
+            let myStorage = window.localStorage;
+            let state = JSON.parse(localStorage.getItem("bingo"))
+            if (state) {
+                state.checkedItems.forEach(i => document.getElementById(i).disabled = true)
+            } else {
+                localStorage.setItem("bingo", JSON.stringify({lastFilled: null, checkedItems: []}))
+            }
+        </script>
+    </body>
+</html>
