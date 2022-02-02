@@ -69,7 +69,14 @@
             let myStorage = window.localStorage;
             let state = JSON.parse(localStorage.getItem("bingo"))
             if (state) {
-                state.checkedItems.forEach(i => document.getElementById(i).disabled = true)
+                for (let i of state.checkedItems) {
+                    console.log(i)
+                    let el = document.getElementById(i)
+                    if (el === null) {
+                        continue
+                    }
+                    el.disabled = true
+                }
             } else {
                 localStorage.setItem("bingo", JSON.stringify({lastFilled: null, checkedItems: []}))
             }
