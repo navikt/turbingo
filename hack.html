@@ -74,6 +74,7 @@
                     if (el === null) {
                         continue
                     }
+                    el.classList.add("checked")
                 }
             } else {
                 localStorage.setItem("bingo", JSON.stringify({lastFilled: null, checkedItems: []}))
